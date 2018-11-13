@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		845CAEFD219A51C000A8DA20 /* roblox-death-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 845CAEFC219A51C000A8DA20 /* roblox-death-sound.mp3 */; };
+		845CAEFF219A525600A8DA20 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CAEFE219A525600A8DA20 /* GameOverScene.swift */; };
 		84ADEABB21962EB9006EAF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEABA21962EB9006EAF12 /* AppDelegate.swift */; };
 		84ADEABD21962EB9006EAF12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 84ADEABC21962EB9006EAF12 /* GameScene.sks */; };
 		84ADEABF21962EB9006EAF12 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 84ADEABE21962EB9006EAF12 /* Actions.sks */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		845CAEFC219A51C000A8DA20 /* roblox-death-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "roblox-death-sound.mp3"; sourceTree = "<group>"; };
+		845CAEFE219A525600A8DA20 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		84ADEAB721962EB9006EAF12 /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84ADEABA21962EB9006EAF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84ADEABC21962EB9006EAF12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -80,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		845CAEFB219A51C000A8DA20 /* Sound Files */ = {
+			isa = PBXGroup;
+			children = (
+				845CAEFC219A51C000A8DA20 /* roblox-death-sound.mp3 */,
+			);
+			path = "Sound Files";
+			sourceTree = "<group>";
+		};
 		84ADEAAE21962EB9006EAF12 = {
 			isa = PBXGroup;
 			children = (
@@ -107,11 +119,13 @@
 				84ADEABC21962EB9006EAF12 /* GameScene.sks */,
 				84ADEABE21962EB9006EAF12 /* Actions.sks */,
 				84ADEAC021962EB9006EAF12 /* GameScene.swift */,
+				845CAEFE219A525600A8DA20 /* GameOverScene.swift */,
 				84ADEAC221962EB9006EAF12 /* GameViewController.swift */,
 				84ADEAC421962EB9006EAF12 /* Main.storyboard */,
 				84ADEAC721962EBA006EAF12 /* Assets.xcassets */,
 				84ADEAC921962EBA006EAF12 /* LaunchScreen.storyboard */,
 				84ADEACC21962EBA006EAF12 /* Info.plist */,
+				845CAEFB219A51C000A8DA20 /* Sound Files */,
 			);
 			path = FinalProject;
 			sourceTree = "<group>";
@@ -241,6 +255,7 @@
 				84ADEAC621962EB9006EAF12 /* Main.storyboard in Resources */,
 				84ADEABD21962EB9006EAF12 /* GameScene.sks in Resources */,
 				84ADEAC821962EBA006EAF12 /* Assets.xcassets in Resources */,
+				845CAEFD219A51C000A8DA20 /* roblox-death-sound.mp3 in Resources */,
 				84ADEACB21962EBA006EAF12 /* LaunchScreen.storyboard in Resources */,
 				84ADEABF21962EB9006EAF12 /* Actions.sks in Resources */,
 			);
@@ -269,6 +284,7 @@
 			files = (
 				84ADEAC121962EB9006EAF12 /* GameScene.swift in Sources */,
 				84ADEAC321962EB9006EAF12 /* GameViewController.swift in Sources */,
+				845CAEFF219A525600A8DA20 /* GameOverScene.swift in Sources */,
 				84ADEABB21962EB9006EAF12 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
