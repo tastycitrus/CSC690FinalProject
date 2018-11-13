@@ -1,5 +1,5 @@
 //
-//  GameScene.swift
+//  GameViewController.swift
 //  FinalProject
 //
 //  Created by Diana Luu on 11/9/18.

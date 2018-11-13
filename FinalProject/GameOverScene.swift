@@ -1,8 +1,8 @@
 //
-//  GameOverScene.swift
+//  GameViewController.swift
 //  FinalProject
 //
-//  Created by Diana Luu on 11/12/18.
+//  Created by Diana Luu on 11/9/18.
 //  Copyright © 2018 Diana Luu. All rights reserved.
 //
 
