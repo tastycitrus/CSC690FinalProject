@@ -9,6 +9,39 @@
 import SpriteKit
 import GameplayKit
 
+//VECTOR FUNCTIONS
+func +(left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+}
+
+func -(left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+}
+
+func *(point: CGPoint, scalar: CGFloat) -> CGPoint {
+    return CGPoint(x: point.x * scalar, y: point.y * scalar)
+}
+
+func /(point: CGPoint, scalar: CGFloat) -> CGPoint {
+    return CGPoint(x: point.x / scalar, y: point.y / scalar)
+}
+
+#if !(arch(x86_64) || arch(arm64))
+func sqrt(a: CGFloat) -> CGFloat {
+    return CGFloat(sqrtf(Float(a)))
+}
+#endif
+
+extension CGPoint {
+    func length() -> CGFloat {
+        return sqrt(x*x + y*y)
+    }
+    
+    func normalized() -> CGPoint {
+        return self / length()
+    }
+}
+
 class GameScene: SKScene {
     
     private let backgroundNode = BackgroundNode()
@@ -28,6 +61,9 @@ class GameScene: SKScene {
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
         player.physicsBody?.restitution = 0
+        let range = SKRange(lowerLimit: size.width * 0.1, upperLimit: size.width * 0.1)
+        let lockToPosition = SKConstraint.positionX(range)
+        player.constraints = [lockToPosition]
         addChild(player)
         
         //set up jump and shoot buttons
@@ -52,14 +88,18 @@ class GameScene: SKScene {
         //add texture for player shooting
         //add logic for firing projectile from player position
         let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
-        projectile.position = player.position
+        projectile.position = player.position + CGPoint(x: 0.3, y: 0)
         
         projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
         projectile.physicsBody?.isDynamic = true
         projectile.physicsBody?.affectedByGravity = false
         addChild(projectile)
         
+        let destination = projectile.position + CGPoint(x: 1000, y: 0)
         
+        let actionMove = SKAction.move(to: destination, duration: 2.0)
+        let actionMoveDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
