@@ -51,6 +51,15 @@ class GameScene: SKScene {
     func shoot() {
         //add texture for player shooting
         //add logic for firing projectile from player position
+        let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
+        projectile.position = player.position
+        
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.affectedByGravity = false
+        addChild(projectile)
+        
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -58,6 +67,9 @@ class GameScene: SKScene {
             let location = t.location(in: self)
             if jumpButton.contains(location) {
                 jump()
+            }
+            if shootButton.contains(location) {
+                shoot()
             }
         }
     }
