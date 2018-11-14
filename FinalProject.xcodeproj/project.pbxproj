@@ -17,6 +17,7 @@
 		84ADEACB21962EBA006EAF12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84ADEAC921962EBA006EAF12 /* LaunchScreen.storyboard */; };
 		84ADEAD621962EBA006EAF12 /* FinalProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEAD521962EBA006EAF12 /* FinalProjectTests.swift */; };
 		84ADEAE121962EBB006EAF12 /* FinalProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEAE021962EBB006EAF12 /* FinalProjectUITests.swift */; };
+		84B6979E219BDBC500F413F9 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6979D219BDBC500F413F9 /* BackgroundNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		84ADEADC21962EBB006EAF12 /* FinalProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinalProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84ADEAE021962EBB006EAF12 /* FinalProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalProjectUITests.swift; sourceTree = "<group>"; };
 		84ADEAE221962EBB006EAF12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84B6979D219BDBC500F413F9 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				84ADEABC21962EB9006EAF12 /* GameScene.sks */,
 				84ADEABE21962EB9006EAF12 /* Actions.sks */,
 				84ADEAC021962EB9006EAF12 /* GameScene.swift */,
+				84B6979D219BDBC500F413F9 /* BackgroundNode.swift */,
 				84ADEAC221962EB9006EAF12 /* GameViewController.swift */,
 				84ADEAC421962EB9006EAF12 /* Main.storyboard */,
 				84ADEAC721962EBA006EAF12 /* Assets.xcassets */,
@@ -268,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84ADEAC121962EB9006EAF12 /* GameScene.swift in Sources */,
+				84B6979E219BDBC500F413F9 /* BackgroundNode.swift in Sources */,
 				84ADEAC321962EB9006EAF12 /* GameViewController.swift in Sources */,
 				84ADEABB21962EB9006EAF12 /* AppDelegate.swift in Sources */,
 			);
