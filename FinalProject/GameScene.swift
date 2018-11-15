@@ -47,7 +47,7 @@ class GameScene: SKScene {
     private let backgroundNode = BackgroundNode()
     private var jumpButton: SKNode! = nil
     private var shootButton: SKNode! = nil
-    let player = SKSpriteNode(imageNamed: "player")
+    let player = SKSpriteNode(imageNamed: "playerrun3")
     //currently using placeholder for player sprite; should make texture for running animation
     
     override func sceneDidLoad() {
@@ -65,6 +65,19 @@ class GameScene: SKScene {
         let lockToPosition = SKConstraint.positionX(range)
         player.constraints = [lockToPosition]
         addChild(player)
+        
+        //implement running cycle for player character
+        //possibly needs revision
+        let run1 = SKTexture(imageNamed: "playerrun1")
+        let run2 = SKTexture(imageNamed: "playerrun2")
+        let run3 = SKTexture(imageNamed: "playerrun3")
+        
+        let cycle1 = SKAction.setTexture(run1, resize: true)
+        let cycle2 = SKAction.setTexture(run2, resize: true)
+        let cycle3 = SKAction.setTexture(run3, resize: true)
+        let wait = SKAction.wait(forDuration: 0.2)
+        
+        player.run(SKAction.repeatForever(SKAction.sequence([cycle1, wait, cycle2, wait, cycle3, wait, cycle2, wait])))
         
         //set up jump and shoot buttons
         jumpButton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 50, height: 50))
