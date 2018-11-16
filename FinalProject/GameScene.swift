@@ -56,11 +56,12 @@ class GameScene: SKScene {
         addChild(backgroundNode)
         
         //set up player position
-        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.3)
+        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.35)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
         player.physicsBody?.restitution = 0
+        player.physicsBody?.allowsRotation = false;
         let range = SKRange(lowerLimit: size.width * 0.1, upperLimit: size.width * 0.1)
         let lockToPosition = SKConstraint.positionX(range)
         player.constraints = [lockToPosition]
@@ -94,7 +95,10 @@ class GameScene: SKScene {
     
     func jump() {
         //add texture for player jumping
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 75))
+        if player.physicsBody?.velocity == CGVector(dx: 0, dy: 0) {
+            player.run(SKAction.setTexture(SKTexture(imageNamed: "playerjump"), resize: true))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 90))
+        }
     }
     
     func shoot() {
