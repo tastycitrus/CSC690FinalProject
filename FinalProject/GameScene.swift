@@ -56,7 +56,7 @@ class GameScene: SKScene {
         addChild(backgroundNode)
         
         //set up player position
-        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.35)
+        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.4)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
@@ -105,7 +105,7 @@ class GameScene: SKScene {
         //add texture for player shooting
         //add logic for firing projectile from player position
         let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
-        projectile.position = player.position + CGPoint(x: 0.3, y: 0)
+        projectile.position = player.position + CGPoint(x: 5, y: 0)
         
         projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
         projectile.physicsBody?.isDynamic = true
