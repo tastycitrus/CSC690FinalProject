@@ -1,6 +1,6 @@
 # FINAL PROJECT DETAILS
 
-## Contributor(s) to project: Diana Luu
+## Contributor(s) to project: Diana Luu, Rajvi Shah
 
 ###### Working Title: Jump N' Shoot Man
 
