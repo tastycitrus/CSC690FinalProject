@@ -55,6 +55,12 @@ class GameScene: SKScene {
         backgroundNode.setup(size: size)
         addChild(backgroundNode)
         
+        setUpPlayer()
+        
+        setUpButtons()
+    }
+    
+    func setUpPlayer() {
         //set up player position
         player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.4)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
@@ -79,7 +85,9 @@ class GameScene: SKScene {
         let wait = SKAction.wait(forDuration: 0.2)
         
         player.run(SKAction.repeatForever(SKAction.sequence([cycle1, wait, cycle2, wait, cycle3, wait, cycle2, wait])))
-        
+    }
+    
+    func setUpButtons() {
         //set up jump and shoot buttons
         jumpButton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 50, height: 50))
         jumpButton.position = CGPoint(x: size.width*0.9, y: size.height*0.1)
@@ -88,6 +96,8 @@ class GameScene: SKScene {
         shootButton.position = CGPoint(x: size.width*0.8, y: size.height*0.1)
         addChild(shootButton)
     }
+    
+    //METHODS FOR HANDLING PLAYER TOUCH INPUT
     
     func touchUp(atPoint pos: CGPoint) {
         //return player to neutral position

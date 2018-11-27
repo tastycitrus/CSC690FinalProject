@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8476461521A66FD3002F2E28 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476461421A66FD3002F2E28 /* MenuScene.swift */; };
 		84ADEABB21962EB9006EAF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEABA21962EB9006EAF12 /* AppDelegate.swift */; };
 		84ADEABD21962EB9006EAF12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 84ADEABC21962EB9006EAF12 /* GameScene.sks */; };
 		84ADEABF21962EB9006EAF12 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 84ADEABE21962EB9006EAF12 /* Actions.sks */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8476461421A66FD3002F2E28 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		84ADEAB721962EB9006EAF12 /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84ADEABA21962EB9006EAF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84ADEABC21962EB9006EAF12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				84ADEABC21962EB9006EAF12 /* GameScene.sks */,
 				84ADEABE21962EB9006EAF12 /* Actions.sks */,
 				84ADEAC021962EB9006EAF12 /* GameScene.swift */,
+				8476461421A66FD3002F2E28 /* MenuScene.swift */,
 				84B6979D219BDBC500F413F9 /* BackgroundNode.swift */,
 				84ADEAC221962EB9006EAF12 /* GameViewController.swift */,
 				84ADEAC421962EB9006EAF12 /* Main.storyboard */,
@@ -272,6 +275,7 @@
 			files = (
 				84ADEAC121962EB9006EAF12 /* GameScene.swift in Sources */,
 				84B6979E219BDBC500F413F9 /* BackgroundNode.swift in Sources */,
+				8476461521A66FD3002F2E28 /* MenuScene.swift in Sources */,
 				84ADEAC321962EB9006EAF12 /* GameViewController.swift in Sources */,
 				84ADEABB21962EB9006EAF12 /* AppDelegate.swift in Sources */,
 			);
