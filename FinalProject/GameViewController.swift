@@ -15,7 +15,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sceneNode = GameScene(size: view.bounds.size)
+        let sceneNode = MenuScene(size: view.bounds.size)
             if let view = self.view as! SKView? {
                 view.presentScene(sceneNode)
                 view.ignoresSiblingOrder = true

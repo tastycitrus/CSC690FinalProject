@@ -9,6 +9,23 @@
 import SpriteKit
 import GameplayKit
 
+/**
+ TODO:
+    Implement health counter for player
+    Implement score counter
+    Implement collision mechanics for player, projectile, and monster
+    Implement winning objective (default: survive for a certain amount of time; other ideas: endless mode (game runs indefinitely until player is KO'd), score attack (game ends when player reaches point threshold), no miss (game over if a monster isn't KO'd))
+    Implement loss condition (default: player is KO'd; alt: monster is missed if in no miss mode)
+    Add basic sound effects for shooting, jumping
+    Find background music to play during the game
+ CONSIDER:
+    Implement difficulty settings (could possibly have it set up here as a pop-up before game begins), would determine monster spawn rate or player life (point multiplier for playing on higher difficulties?)
+    Use larger player sprite?
+    Find a projectile sprite to replace the placeholder one
+    Create player sprite w/ run cycle to replace placeholder one
+    Create monster sprite to replace placeholder one
+ **/
+
 //VECTOR FUNCTIONS
 func +(left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
@@ -42,6 +59,14 @@ extension CGPoint {
     }
 }
 
+struct PhysicsCategory {
+    static let none : UInt32 = 0
+    static let all : UInt32 = UInt32.max
+    static let monster : UInt32 = 0b1
+    static let projectile : UInt32 = 0b10
+    static let player : UInt32 = 0b101
+}
+
 class GameScene: SKScene {
     
     private let backgroundNode = BackgroundNode()
@@ -58,6 +83,9 @@ class GameScene: SKScene {
         setUpPlayer()
         
         setUpButtons()
+        
+        //set up different difficulty modes that alter spawn rate of monsters?
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addMonster), SKAction.wait(forDuration: 1.0)])))
     }
     
     func setUpPlayer() {
@@ -74,7 +102,7 @@ class GameScene: SKScene {
         addChild(player)
         
         //implement running cycle for player character
-        //possibly needs revision
+        //needs revision
         let run1 = SKTexture(imageNamed: "playerrun1")
         let run2 = SKTexture(imageNamed: "playerrun2")
         let run3 = SKTexture(imageNamed: "playerrun3")
@@ -103,32 +131,6 @@ class GameScene: SKScene {
         //return player to neutral position
     }
     
-    func jump() {
-        //add texture for player jumping
-        if player.physicsBody?.velocity == CGVector(dx: 0, dy: 0) {
-            player.run(SKAction.setTexture(SKTexture(imageNamed: "playerjump"), resize: true))
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 90))
-        }
-    }
-    
-    func shoot() {
-        //add texture for player shooting
-        //add logic for firing projectile from player position
-        let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
-        projectile.position = player.position + CGPoint(x: 5, y: 0)
-        
-        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-        projectile.physicsBody?.isDynamic = true
-        projectile.physicsBody?.affectedByGravity = false
-        addChild(projectile)
-        
-        let destination = projectile.position + CGPoint(x: 1000, y: 0)
-        
-        let actionMove = SKAction.move(to: destination, duration: 2.0)
-        let actionMoveDone = SKAction.removeFromParent()
-        projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             let location = t.location(in: self)
@@ -145,5 +147,76 @@ class GameScene: SKScene {
         for t in touches {
             self.touchUp(atPoint: t.location(in: self))
         }
+    }
+    
+    //ACTION METHODS
+    func jump() {
+        if player.physicsBody?.velocity == CGVector(dx: 0, dy: 0) {
+            player.run(SKAction.setTexture(SKTexture(imageNamed: "playerjump"), resize: true))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 90))
+        }
+    }
+    
+    func shoot() {
+        //add texture for player shooting?
+        let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
+        projectile.position = player.position + CGPoint(x: 5, y: 0)
+        
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.affectedByGravity = false
+        addChild(projectile)
+        
+        let destination = projectile.position + CGPoint(x: 1000, y: 0)
+        
+        let actionMove = SKAction.move(to: destination, duration: 2.0)
+        let actionMoveDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
+    }
+    
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random())/0xFFFFFFFF)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return random() * (max-min) + min
+    }
+    
+    func addMonster() {
+        //USING PLACEHOLDER SPRITE FOR MONSTERS; REPLACE WITH ACTUAL MONSTER SPRITE
+        let monster = SKSpriteNode(imageNamed: "player")
+        
+        monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size)
+        monster.physicsBody?.isDynamic = true
+        monster.physicsBody?.categoryBitMask = PhysicsCategory.monster
+        monster.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+        monster.physicsBody?.collisionBitMask = PhysicsCategory.none
+        monster.physicsBody?.affectedByGravity = false
+        
+        let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: size.height - monster.size.height/2)
+        
+        monster.position = CGPoint(x: size.width + monster.size.width/2, y: yPos)
+        
+        addChild(monster)
+        
+        let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+        
+        let actionMove = SKAction.move(to: CGPoint(x: -monster.size.width/2, y: yPos), duration: TimeInterval(actualDuration))
+        
+        let actionMoveDone = SKAction.removeFromParent()
+        
+        monster.run(SKAction.sequence([actionMove, actionMoveDone]))
+        
+        /**
+         TODO:
+           Add collision mechanics for when monster is hit by projectile
+           Add collision mechanics for when player touches a monster (take damage/game over)
+         CONSIDER:
+           Regular mode where the goal is to reach the end of the stage (judged by hidden timer?)
+           Endless mode where the goal is to see how long you can survive
+           Score attack mode where the goal is to reach a point threshold (consider combo mechanic where
+            points gained from defeating monsters are increased the more monsters that are defeated without
+            missing, resets if a monster flies off screen w/o being destroyed)
+        **/
     }
 }
