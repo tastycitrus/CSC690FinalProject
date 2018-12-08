@@ -107,6 +107,7 @@ class GameScene: SKScene {
         player.physicsBody?.isDynamic = true
         player.physicsBody?.restitution = 0
         player.physicsBody?.allowsRotation = false
+        player.physicsBody?.categoryBitMask = PhysicsCategory.player
         
         let range = SKRange(lowerLimit: size.width * 0.1, upperLimit: size.width * 0.1)
         let lockToPosition = SKConstraint.positionX(range)
@@ -118,12 +119,12 @@ class GameScene: SKScene {
         let run1 = SKTexture(imageNamed: "playerrun1")
         let run2 = SKTexture(imageNamed: "playerrun2")
         let run3 = SKTexture(imageNamed: "playerrun3")
-        
+
         let cycle1 = SKAction.setTexture(run1, resize: true)
         let cycle2 = SKAction.setTexture(run2, resize: true)
         let cycle3 = SKAction.setTexture(run3, resize: true)
         let wait = SKAction.wait(forDuration: 0.2)
-        
+
         player.run(SKAction.repeatForever(SKAction.sequence([cycle1, wait, cycle2, wait, cycle3, wait, cycle2, wait])))
     }
     
@@ -176,7 +177,7 @@ class GameScene: SKScene {
     }
     
     func updateBackground() {
-        self.enumerateChildNodes(withName: "Background") { (node, stop) in
+        enumerateChildNodes(withName: "Background") { (node, stop) in
             if let back = node as? SKSpriteNode {
                 let move = CGPoint(x: -self.backgroundSpeed * CGFloat(self.deltaTime), y: 0)
                 back.position += move
@@ -189,7 +190,7 @@ class GameScene: SKScene {
     }
     
     func updateGroundMovement() {
-        self.enumerateChildNodes(withName: "ground") { (node, stop) in
+        enumerateChildNodes(withName: "ground") { (node, stop) in
             if let back = node as? SKSpriteNode {
                 let move = CGPoint(x: -self.backgroundSpeed * CGFloat(self.deltaTime), y: 0)
                 back.position += move
@@ -226,7 +227,7 @@ class GameScene: SKScene {
     func jump() {
         if player.physicsBody?.velocity == CGVector(dx: 0, dy: 0) {
             player.run(SKAction.setTexture(SKTexture(imageNamed: "playerjump"), resize: true))
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 90))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
         }
     }
     
