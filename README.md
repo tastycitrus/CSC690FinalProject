@@ -1,6 +1,6 @@
 # FINAL PROJECT DETAILS
 
-## Contributor(s) to project: Diana Luu, Rajvi Shah
+## Contributor(s) to project: Diana Luu
 
 ###### Working Title: Jump N' Shoot Man
 
@@ -26,3 +26,18 @@ Progress Report (11/14/18):
 	* Implement a health bar for the player (?)
 	* Implement unique enemies (i.e. flying enemy, enemy that shoots projectiles)
 	* Implement boss enemy (spawns at end of level, has health bar, has unique battle mechanics)
+
+Progress Report (12/8/18):
+* Completed tasks:
+	* Added monster spawn
+	* Added collision mechanics for when a projectile hits a monster
+	* Created start screen
+	* Added proper moving background
+* TODO:
+	* Add win/loss condition
+	* Add collision mechanics for when player touches a monster
+	* Add game over screen that goes back to menu
+	* Replace placeholder sprites
+* Known issues:
+	* FPS drop when adding in background (specifically background image)
+	* Occasional game freeze on startup
