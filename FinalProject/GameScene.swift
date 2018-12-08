@@ -68,6 +68,7 @@ struct PhysicsCategory {
     static let all : UInt32 = UInt32.max
     static let monster : UInt32 = 0b1
     static let projectile : UInt32 = 0b10
+    static let player : UInt32 = 0b101
 }
 
 class GameScene: SKScene {
@@ -92,6 +93,8 @@ class GameScene: SKScene {
         
         setUpButtons()
         
+        physicsWorld.contactDelegate = self
+        
         //set up different difficulty modes that alter spawn rate of monsters?
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addMonster), SKAction.wait(forDuration: TimeInterval(arc4random_uniform(4)))])))
     }
@@ -103,7 +106,8 @@ class GameScene: SKScene {
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
         player.physicsBody?.restitution = 0
-        player.physicsBody?.allowsRotation = false;
+        player.physicsBody?.allowsRotation = false
+        
         let range = SKRange(lowerLimit: size.width * 0.1, upperLimit: size.width * 0.1)
         let lockToPosition = SKConstraint.positionX(range)
         player.constraints = [lockToPosition]
@@ -141,7 +145,7 @@ class GameScene: SKScene {
             let background = SKSpriteNode(texture: backgroundTexture)
             background.anchorPoint = CGPoint.zero
             background.position = CGPoint(x: CGFloat(i) * size.width, y: 0.0)
-            background.size = self.size
+            background.size = size
             background.zPosition = -5
             background.name = "Background"
             addChild(background)
@@ -151,7 +155,7 @@ class GameScene: SKScene {
             let groundTexture = SKTexture(imageNamed: "ground-\(i)")
             let ground = SKSpriteNode(texture: groundTexture)
             ground.anchorPoint = CGPoint.zero
-            ground.size = CGSize(width: self.size.width, height: ground.size.height)
+            ground.size = CGSize(width: size.width, height: size.height*0.2)
             ground.position = CGPoint(x: CGFloat(i) * size.width, y: 0)
             ground.zPosition = 1
             ground.name = "ground"
@@ -201,26 +205,17 @@ class GameScene: SKScene {
     
     
     //METHODS FOR HANDLING PLAYER TOUCH INPUT
-    
-    func touchUp(atPoint pos: CGPoint) {
-        //return player to neutral position
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            let location = t.location(in: self)
-            if jumpButton.contains(location) {
-                jump()
-            }
-            if shootButton.contains(location) {
-                shoot()
-            }
-        }
-    }
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            self.touchUp(atPoint: t.location(in: self))
+        guard let touch = touches.first else {
+            return
+        }
+        
+        let location = touch.location(in: self)
+        if jumpButton.contains(location) {
+            jump()
+        }
+        if shootButton.contains(location) {
+            shoot()
         }
     }
     
@@ -241,12 +236,13 @@ class GameScene: SKScene {
         projectile.position = player.position + CGPoint(x: 5, y: 0)
         
         projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-        projectile.physicsBody?.isDynamic = true
         projectile.physicsBody?.affectedByGravity = false
+        projectile.physicsBody?.isDynamic = true
         projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
         projectile.physicsBody?.contactTestBitMask = PhysicsCategory.monster
         projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
         projectile.physicsBody?.usesPreciseCollisionDetection = true
+        
         addChild(projectile)
         
         let destination = projectile.position + CGPoint(x: 1000, y: 0)
@@ -269,11 +265,11 @@ class GameScene: SKScene {
         let monster = SKSpriteNode(imageNamed: "player")
         
         monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size)
+        monster.physicsBody?.affectedByGravity = false
         monster.physicsBody?.isDynamic = true
         monster.physicsBody?.categoryBitMask = PhysicsCategory.monster
         monster.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
         monster.physicsBody?.collisionBitMask = PhysicsCategory.none
-        monster.physicsBody?.affectedByGravity = false
         
         let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: (size.height*0.9) - monster.size.height/2)
         
@@ -288,28 +284,12 @@ class GameScene: SKScene {
         let actionMoveDone = SKAction.removeFromParent()
         
         monster.run(SKAction.sequence([actionMove, actionMoveDone]))
-        
-        /**
-         TODO:
-           Add collision mechanics for when monster is hit by projectile
-           Add collision mechanics for when player touches a monster (take damage/game over)
-         CONSIDER:
-           Regular mode where the goal is to reach the end of the stage (judged by hidden timer?)
-           Endless mode where the goal is to see how long you can survive
-           Score attack mode where the goal is to reach a point threshold (consider combo mechanic where
-            points gained from defeating monsters are increased the more monsters that are defeated without
-            missing, resets if a monster flies off screen w/o being destroyed)
-        **/
     }
     
-    func projectileHitMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
+    func projectileDidHitMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
         projectile.removeFromParent()
         monster.removeFromParent()
         //logic for increasing score or monster defeated count?
-    }
-    
-    func monsterHitPlayer(monster: SKSpriteNode, player: SKSpriteNode) {
-        monster.removeFromParent()
     }
 }
 
@@ -328,7 +308,7 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if ((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
             if let monster = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
-                projectileHitMonster(projectile: projectile, monster: monster)
+                projectileDidHitMonster(projectile: projectile, monster: monster)
             }
         }
     }
