@@ -23,7 +23,7 @@ class MenuScene: SKScene {
         backgroundColor = SKColor.white
         
         let titleLabel = SKLabelNode(fontNamed: "Chalkduster")
-        titleLabel.text = "Game Name"
+        titleLabel.text = "Jump 'N Shoot Man"
         titleLabel.fontSize = 40
         titleLabel.fontColor = SKColor.black
         titleLabel.position = CGPoint(x: size.width/2, y: (size.height*2/3))

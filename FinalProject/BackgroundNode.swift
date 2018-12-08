@@ -10,7 +10,6 @@ import SpriteKit
 
 public class BackgroundNode: SKNode {
     
-    //figure out how to add moving background and possibly a tile map for platforming
     public func setup(size: CGSize) {
         let yPos: CGFloat = size.height * 0.2
         let startPoint = CGPoint(x: 0, y: yPos)
