@@ -35,6 +35,10 @@ func -(left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 
+func +=(left: inout CGPoint, right: CGPoint) {
+    left = left + right
+}
+
 func *(point: CGPoint, scalar: CGFloat) -> CGPoint {
     return CGPoint(x: point.x * scalar, y: point.y * scalar)
 }
@@ -75,10 +79,15 @@ class GameScene: SKScene {
     let player = SKSpriteNode(imageNamed: "playerrun3")
     //currently using placeholder for player sprite; should make texture for running animation
     
+    var backgroundSpeed: CGFloat = 80.0
+    var deltaTime: TimeInterval = 0
+    var lastUpdateTimeInterval: TimeInterval = 0
+    
     override func sceneDidLoad() {
         //set up background
         backgroundNode.setup(size: size)
         addChild(backgroundNode)
+        setUpBackground()
         
         setUpPlayer()
         
@@ -119,10 +128,74 @@ class GameScene: SKScene {
         //set up jump and shoot buttons
         jumpButton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 50, height: 50))
         jumpButton.position = CGPoint(x: size.width*0.9, y: size.height*0.1)
+        jumpButton.zPosition = 2
         addChild(jumpButton)
         shootButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 50, height: 50))
         shootButton.position = CGPoint(x: size.width*0.8, y: size.height*0.1)
+        shootButton.zPosition = 2
         addChild(shootButton)
+    }
+    
+    func setUpBackground() {
+        for i in 0..<2 {
+            let backgroundTexture = SKTexture(imageNamed: "bg-\(i)")
+            let background = SKSpriteNode(texture: backgroundTexture)
+            background.anchorPoint = CGPoint.zero
+            background.position = CGPoint(x: CGFloat(i) * size.width, y: 0.0)
+            background.size = self.size
+            background.zPosition = -5
+            background.name = "Background"
+            addChild(background)
+        }
+        
+        for i in 0..<2 {
+            let groundTexture = SKTexture(imageNamed: "ground-\(i)")
+            let ground = SKSpriteNode(texture: groundTexture)
+            ground.anchorPoint = CGPoint.zero
+            ground.size = CGSize(width: self.size.width, height: ground.size.height)
+            ground.position = CGPoint(x: CGFloat(i) * size.width, y: 0)
+            ground.zPosition = 1
+            ground.name = "ground"
+            addChild(ground)
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if lastUpdateTimeInterval == 0 {
+            lastUpdateTimeInterval = currentTime
+        }
+        
+        deltaTime = currentTime - lastUpdateTimeInterval
+        lastUpdateTimeInterval = currentTime
+        
+        updateBackground()
+        updateGroundMovement()
+    }
+    
+    func updateBackground() {
+        self.enumerateChildNodes(withName: "Background") { (node, stop) in
+            if let back = node as? SKSpriteNode {
+                let move = CGPoint(x: -self.backgroundSpeed * CGFloat(self.deltaTime), y: 0)
+                back.position += move
+                
+                if back.position.x < -back.size.width {
+                    back.position += CGPoint(x: back.size.width * CGFloat(2), y: 0)
+                }
+            }
+        }
+    }
+    
+    func updateGroundMovement() {
+        self.enumerateChildNodes(withName: "ground") { (node, stop) in
+            if let back = node as? SKSpriteNode {
+                let move = CGPoint(x: -self.backgroundSpeed * CGFloat(self.deltaTime), y: 0)
+                back.position += move
+                
+                if back.position.x < -back.size.width {
+                    back.position += CGPoint(x: back.size.width * CGFloat(2), y: 0)
+                }
+            }
+        }
     }
     
     //METHODS FOR HANDLING PLAYER TOUCH INPUT
@@ -193,7 +266,7 @@ class GameScene: SKScene {
         monster.physicsBody?.collisionBitMask = PhysicsCategory.none
         monster.physicsBody?.affectedByGravity = false
         
-        let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: size.height - monster.size.height/2)
+        let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: (size.height*0.9) - monster.size.height/2)
         
         monster.position = CGPoint(x: size.width + monster.size.width/2, y: yPos)
         
