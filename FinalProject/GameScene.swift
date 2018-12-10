@@ -7,7 +7,6 @@
 //
 
 import SpriteKit
-import GameplayKit
 
 /**
  TODO:
@@ -69,6 +68,7 @@ struct PhysicsCategory {
     static let monster : UInt32 = 0b1
     static let projectile : UInt32 = 0b10
     static let player : UInt32 = 0b101
+    static let floor : UInt32 = 0b1010
 }
 
 class GameScene: SKScene {
@@ -83,17 +83,43 @@ class GameScene: SKScene {
     var deltaTime: TimeInterval = 0
     var lastUpdateTimeInterval: TimeInterval = 0
     
+    var scoreLabel: SKLabelNode!
+    var playerScore: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(playerScore)"
+        }
+    }
+    var healthLabel: SKLabelNode!
+    var playerHealth: Int = 3 {
+        didSet {
+            healthLabel.text = "Lives: \(playerHealth)"
+        }
+    }
+    
     override func sceneDidLoad() {
+        physicsWorld.contactDelegate = self
+        
         //set up background
         backgroundNode.setup(size: size)
+        backgroundNode.physicsBody?.categoryBitMask = PhysicsCategory.floor
         addChild(backgroundNode)
         setUpBackground()
         
-        setUpPlayer()
-        
         setUpButtons()
         
-        physicsWorld.contactDelegate = self
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.position = CGPoint(x: size.width*0.1, y: size.height*0.9)
+        addChild(scoreLabel)
+        
+        healthLabel = SKLabelNode(fontNamed: "Chalkduster")
+        healthLabel.text = "Lives: 3"
+        healthLabel.horizontalAlignmentMode = .right
+        healthLabel.position = CGPoint(x: size.width*0.9, y: size.height*0.9)
+        addChild(healthLabel)
+        
+        setUpPlayer()
         
         //set up different difficulty modes that alter spawn rate of monsters?
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addMonster), SKAction.wait(forDuration: TimeInterval(arc4random_uniform(4)))])))
@@ -108,6 +134,7 @@ class GameScene: SKScene {
         player.physicsBody?.restitution = 0
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
+        player.physicsBody?.contactTestBitMask = PhysicsCategory.monster
         
         let range = SKRange(lowerLimit: size.width * 0.1, upperLimit: size.width * 0.1)
         let lockToPosition = SKConstraint.positionX(range)
@@ -141,16 +168,16 @@ class GameScene: SKScene {
     }
     
     func setUpBackground() {
-        for i in 0..<2 {
-            let backgroundTexture = SKTexture(imageNamed: "bg-\(i)")
-            let background = SKSpriteNode(texture: backgroundTexture)
-            background.anchorPoint = CGPoint.zero
-            background.position = CGPoint(x: CGFloat(i) * size.width, y: 0.0)
-            background.size = size
-            background.zPosition = -5
-            background.name = "Background"
-            addChild(background)
-        }
+//        for i in 0..<2 {
+//            let backgroundTexture = SKTexture(imageNamed: "bg-\(i)")
+//            let background = SKSpriteNode(texture: backgroundTexture)
+//            background.anchorPoint = CGPoint.zero
+//            background.position = CGPoint(x: CGFloat(i) * size.width, y: 0.0)
+//            background.size = size
+//            background.zPosition = -1
+//            background.name = "Background"
+//            addChild(background)
+//        }
         
         for i in 0..<2 {
             let groundTexture = SKTexture(imageNamed: "ground-\(i)")
@@ -172,7 +199,7 @@ class GameScene: SKScene {
         deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
         
-        updateBackground()
+//        updateBackground()
         updateGroundMovement()
     }
     
@@ -233,7 +260,7 @@ class GameScene: SKScene {
     
     func shoot() {
         //add texture for player shooting?
-        let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 10, height: 10))
+        let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 15, height: 15))
         projectile.position = player.position + CGPoint(x: 5, y: 0)
         
         projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
@@ -278,7 +305,7 @@ class GameScene: SKScene {
         
         addChild(monster)
         
-        let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(5.0))
         
         let actionMove = SKAction.move(to: CGPoint(x: -monster.size.width/2, y: yPos), duration: TimeInterval(actualDuration))
         
@@ -290,7 +317,22 @@ class GameScene: SKScene {
     func projectileDidHitMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
         projectile.removeFromParent()
         monster.removeFromParent()
+        playerScore = playerScore + 1
         //logic for increasing score or monster defeated count?
+    }
+    
+    func playerDidTouchMonster(monster: SKSpriteNode) {
+        monster.removeFromParent()
+        playerHealth = playerHealth - 1
+        print("oof")
+        if playerHealth <= 0 {
+            //death animation?
+            //segue to game over screen
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            let gameOverScene = GameOverScene(size: self.size, score: playerScore)
+            view?.presentScene(gameOverScene, transition: reveal)
+        }
+        //player flinch animation
     }
 }
 
@@ -310,6 +352,12 @@ extension GameScene: SKPhysicsContactDelegate {
         if ((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
             if let monster = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidHitMonster(projectile: projectile, monster: monster)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.player != 0)) {
+            if let monster = firstBody.node as? SKSpriteNode {
+                playerDidTouchMonster(monster: monster)
             }
         }
     }
