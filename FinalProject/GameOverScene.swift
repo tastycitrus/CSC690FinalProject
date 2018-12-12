@@ -12,7 +12,11 @@ class GameOverScene: SKScene {
     init(size: CGSize, score: Int) {
         super.init(size: size)
         
-        backgroundColor = SKColor.white
+        let background = SKSpriteNode(imageNamed: "bg-1")
+        background.zPosition = -1
+        background.size = CGSize(width: size.width, height: size.height)
+        background.anchorPoint = CGPoint.zero
+        addChild(background)
         
         let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = "GAME OVER"

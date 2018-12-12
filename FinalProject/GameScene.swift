@@ -8,23 +8,6 @@
 
 import SpriteKit
 
-/**
- TODO:
-    Implement health counter for player
-    Implement score counter
-    Implement collision mechanics for player, projectile, and monster
-    Implement winning objective (default: survive for a certain amount of time; other ideas: endless mode (game runs indefinitely until player is KO'd), score attack (game ends when player reaches point threshold), no miss (game over if a monster isn't KO'd))
-    Implement loss condition (default: player is KO'd; alt: monster is missed if in no miss mode)
-    Add basic sound effects for shooting, jumping
-    Find background music to play during the game
- CONSIDER:
-    Implement difficulty settings (could possibly have it set up here as a pop-up before game begins), would determine monster spawn rate or player life (point multiplier for playing on higher difficulties?)
-    Use larger player sprite?
-    Find a projectile sprite to replace the placeholder one
-    Create player sprite w/ run cycle to replace placeholder one
-    Create monster sprite to replace placeholder one
- **/
-
 //VECTOR FUNCTIONS
 func +(left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
@@ -95,6 +78,8 @@ class GameScene: SKScene {
             healthLabel.text = "Lives: \(playerHealth)"
         }
     }
+    
+    var comboCounter: Int = 1
     
     override func sceneDidLoad() {
         physicsWorld.contactDelegate = self
@@ -168,22 +153,13 @@ class GameScene: SKScene {
     }
     
     func setUpBackground() {
-//        for i in 0..<2 {
-//            let backgroundTexture = SKTexture(imageNamed: "bg-\(i)")
-//            let background = SKSpriteNode(texture: backgroundTexture)
-//            background.anchorPoint = CGPoint.zero
-//            background.position = CGPoint(x: CGFloat(i) * size.width, y: 0.0)
-//            background.size = size
-//            background.zPosition = -1
-//            background.name = "Background"
-//            addChild(background)
-//        }
+        backgroundColor = UIColor(red: 0/255, green: 200/255, blue: 255/255, alpha: 1.0)
         
         for i in 0..<2 {
             let groundTexture = SKTexture(imageNamed: "ground-\(i)")
             let ground = SKSpriteNode(texture: groundTexture)
             ground.anchorPoint = CGPoint.zero
-            ground.size = CGSize(width: size.width, height: size.height*0.2)
+            ground.size = CGSize(width: size.width, height: size.height*0.21)
             ground.position = CGPoint(x: CGFloat(i) * size.width, y: 0)
             ground.zPosition = 1
             ground.name = "ground"
@@ -253,7 +229,6 @@ class GameScene: SKScene {
     //ACTION METHODS
     func jump() {
         if player.physicsBody?.velocity == CGVector(dx: 0, dy: 0) {
-            player.run(SKAction.setTexture(SKTexture(imageNamed: "playerjump"), resize: true))
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
         }
     }
@@ -290,7 +265,7 @@ class GameScene: SKScene {
     
     func addMonster() {
         //USING PLACEHOLDER SPRITE FOR MONSTERS; REPLACE WITH ACTUAL MONSTER SPRITE
-        let monster = SKSpriteNode(imageNamed: "player")
+        let monster = SKSpriteNode(imageNamed: "monster")
         
         monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size)
         monster.physicsBody?.affectedByGravity = false
@@ -311,20 +286,27 @@ class GameScene: SKScene {
         
         let actionMoveDone = SKAction.removeFromParent()
         
-        monster.run(SKAction.sequence([actionMove, actionMoveDone]))
+        let resetCounter = SKAction.run() {
+            self.comboCounter = 1
+        }
+        
+        monster.run(SKAction.sequence([actionMove, actionMoveDone, resetCounter]))
     }
     
     func projectileDidHitMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
         projectile.removeFromParent()
         monster.removeFromParent()
-        playerScore = playerScore + 1
+        playerScore = playerScore + (comboCounter * 10)
+        if comboCounter * 2 <= 128 {
+            comboCounter = comboCounter*2
+        }
         //logic for increasing score or monster defeated count?
     }
     
     func playerDidTouchMonster(monster: SKSpriteNode) {
         monster.removeFromParent()
         playerHealth = playerHealth - 1
-        print("oof")
+        comboCounter = 1
         if playerHealth <= 0 {
             //death animation?
             //segue to game over screen

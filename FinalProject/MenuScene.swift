@@ -9,18 +9,17 @@
 import SpriteKit
 
 class MenuScene: SKScene {
-    /**
-     TODO:
-        Make main menu look nicer (create buttons, find a background image)
-        Implement different game modes somehow (passing something to game scene?)
-        Have a tutorial page for displaying how to play the game
-    **/
+    
     private var startButton: SKNode! = nil
     
     override init(size: CGSize) {
         super.init(size: size)
         
-        backgroundColor = SKColor.white
+        let background = SKSpriteNode(imageNamed: "bg-0")
+        background.zPosition = -1
+        background.size = CGSize(width: size.width, height: size.height)
+        background.anchorPoint = CGPoint.zero
+        addChild(background)
         
         let titleLabel = SKLabelNode(fontNamed: "Chalkduster")
         titleLabel.text = "Jump 'N Shoot Man"
