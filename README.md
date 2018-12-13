@@ -41,3 +41,14 @@ Progress Report (12/8/18):
 * Known issues:
 	* FPS drop when adding in background (specifically background image)
 	* Occasional game freeze on startup
+	
+Progress Report (12/12/18):
+* Completed tasks:
+	* Added loss condition (player collides with enemy three times)
+	* Added game over screen (automatically segues back to main menu after five seconds)
+	* Added score counter (+ 10 * current combo counter, up to x128)
+	* Replaced placeholder sprites
+	* Added sound effects and background music
+* Known issues:
+	* FPS stays at 40 FPS for unknown reasons
+	* Game still occasionally freezes upon startup
