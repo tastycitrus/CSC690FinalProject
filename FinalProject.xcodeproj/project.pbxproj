@@ -18,6 +18,9 @@
 		84ADEAD621962EBA006EAF12 /* FinalProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEAD521962EBA006EAF12 /* FinalProjectTests.swift */; };
 		84ADEAE121962EBB006EAF12 /* FinalProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADEAE021962EBB006EAF12 /* FinalProjectUITests.swift */; };
 		84B6979E219BDBC500F413F9 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6979D219BDBC500F413F9 /* BackgroundNode.swift */; };
+		84CB232D21C1D4B5004EBF3C /* Pew_Pew-DKnight556-1379997159.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84CB232B21C1D4B5004EBF3C /* Pew_Pew-DKnight556-1379997159.mp3 */; };
+		84CB232E21C1D4B5004EBF3C /* roblox-death-sound-effect-opNTQCf4R.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84CB232C21C1D4B5004EBF3C /* roblox-death-sound-effect-opNTQCf4R.mp3 */; };
+		84CB233121C20845004EBF3C /* Defense Line.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84CB233021C20845004EBF3C /* Defense Line.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		84ADEAE021962EBB006EAF12 /* FinalProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalProjectUITests.swift; sourceTree = "<group>"; };
 		84ADEAE221962EBB006EAF12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B6979D219BDBC500F413F9 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
+		84CB232B21C1D4B5004EBF3C /* Pew_Pew-DKnight556-1379997159.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Pew_Pew-DKnight556-1379997159.mp3"; sourceTree = "<group>"; };
+		84CB232C21C1D4B5004EBF3C /* roblox-death-sound-effect-opNTQCf4R.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "roblox-death-sound-effect-opNTQCf4R.mp3"; sourceTree = "<group>"; };
+		84CB233021C20845004EBF3C /* Defense Line.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Defense Line.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,7 @@
 				84ADEAC421962EB9006EAF12 /* Main.storyboard */,
 				84ADEAC721962EBA006EAF12 /* Assets.xcassets */,
 				84ADEAC921962EBA006EAF12 /* LaunchScreen.storyboard */,
+				84CB232F21C1D4C2004EBF3C /* Sound Files */,
 				84ADEACC21962EBA006EAF12 /* Info.plist */,
 			);
 			path = FinalProject;
@@ -135,6 +142,16 @@
 				84ADEAE221962EBB006EAF12 /* Info.plist */,
 			);
 			path = FinalProjectUITests;
+			sourceTree = "<group>";
+		};
+		84CB232F21C1D4C2004EBF3C /* Sound Files */ = {
+			isa = PBXGroup;
+			children = (
+				84CB232B21C1D4B5004EBF3C /* Pew_Pew-DKnight556-1379997159.mp3 */,
+				84CB232C21C1D4B5004EBF3C /* roblox-death-sound-effect-opNTQCf4R.mp3 */,
+				84CB233021C20845004EBF3C /* Defense Line.mp3 */,
+			);
+			path = "Sound Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,9 +261,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CB233121C20845004EBF3C /* Defense Line.mp3 in Resources */,
+				84CB232E21C1D4B5004EBF3C /* roblox-death-sound-effect-opNTQCf4R.mp3 in Resources */,
 				84ADEAC621962EB9006EAF12 /* Main.storyboard in Resources */,
 				84ADEAC821962EBA006EAF12 /* Assets.xcassets in Resources */,
 				84ADEACB21962EBA006EAF12 /* LaunchScreen.storyboard in Resources */,
+				84CB232D21C1D4B5004EBF3C /* Pew_Pew-DKnight556-1379997159.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

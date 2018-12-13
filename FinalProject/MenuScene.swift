@@ -29,8 +29,9 @@ class MenuScene: SKScene {
         
         addChild(titleLabel)
         
-        startButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 100, height: 40))
+        startButton = SKSpriteNode(imageNamed: "startbutton")
         startButton.position = CGPoint(x: size.width/2, y: size.height/2)
+        (startButton as? SKSpriteNode)!.size = CGSize(width: 100, height: 40)
         
         addChild(startButton)
     }
