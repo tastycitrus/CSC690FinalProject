@@ -81,6 +81,8 @@ class GameScene: SKScene {
     
     var comboCounter: Int = 1
     
+    var backgroundMusic: SKAudioNode!
+    
     override func sceneDidLoad() {
         physicsWorld.contactDelegate = self
         
@@ -103,6 +105,11 @@ class GameScene: SKScene {
         healthLabel.horizontalAlignmentMode = .right
         healthLabel.position = CGPoint(x: size.width*0.9, y: size.height*0.9)
         addChild(healthLabel)
+        
+        if let musicURL = Bundle.main.url(forResource: "Defense Line", withExtension: "mp3") {
+            backgroundMusic = SKAudioNode(url: musicURL)
+            addChild(backgroundMusic)
+        }
         
         setUpPlayer()
         
@@ -127,7 +134,6 @@ class GameScene: SKScene {
         addChild(player)
         
         //implement running cycle for player character
-        //needs revision
         let run1 = SKTexture(imageNamed: "playerrun1")
         let run2 = SKTexture(imageNamed: "playerrun2")
         let run3 = SKTexture(imageNamed: "playerrun3")
@@ -142,17 +148,18 @@ class GameScene: SKScene {
     
     func setUpButtons() {
         //set up jump and shoot buttons
-        jumpButton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 50, height: 50))
+        jumpButton = SKSpriteNode(imageNamed: "jumpbutton")
         jumpButton.position = CGPoint(x: size.width*0.9, y: size.height*0.1)
         jumpButton.zPosition = 2
         addChild(jumpButton)
-        shootButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 50, height: 50))
+        shootButton = SKSpriteNode(imageNamed: "shootbutton")
         shootButton.position = CGPoint(x: size.width*0.8, y: size.height*0.1)
         shootButton.zPosition = 2
         addChild(shootButton)
     }
     
     func setUpBackground() {
+        //set up moving ground texture
         backgroundColor = UIColor(red: 0/255, green: 200/255, blue: 255/255, alpha: 1.0)
         
         for i in 0..<2 {
@@ -175,21 +182,7 @@ class GameScene: SKScene {
         deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
         
-//        updateBackground()
         updateGroundMovement()
-    }
-    
-    func updateBackground() {
-        enumerateChildNodes(withName: "Background") { (node, stop) in
-            if let back = node as? SKSpriteNode {
-                let move = CGPoint(x: -self.backgroundSpeed * CGFloat(self.deltaTime), y: 0)
-                back.position += move
-                
-                if back.position.x < -back.size.width {
-                    back.position += CGPoint(x: back.size.width * CGFloat(2), y: 0)
-                }
-            }
-        }
     }
     
     func updateGroundMovement() {
@@ -234,7 +227,6 @@ class GameScene: SKScene {
     }
     
     func shoot() {
-        //add texture for player shooting?
         let projectile = SKSpriteNode(color: SKColor.yellow, size: CGSize(width: 15, height: 15))
         projectile.position = player.position + CGPoint(x: 5, y: 0)
         
@@ -246,6 +238,7 @@ class GameScene: SKScene {
         projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
         projectile.physicsBody?.usesPreciseCollisionDetection = true
         
+        //run(SKAction.playSoundFileNamed("Pew_Pew-DKnight556-1379997159.mp3", waitForCompletion: false))
         addChild(projectile)
         
         let destination = projectile.position + CGPoint(x: 1000, y: 0)
@@ -294,13 +287,13 @@ class GameScene: SKScene {
     }
     
     func projectileDidHitMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
+        run(SKAction.playSoundFileNamed("roblox-death-sound-effect-opNTQCf4R.mp3", waitForCompletion: false))
         projectile.removeFromParent()
         monster.removeFromParent()
         playerScore = playerScore + (comboCounter * 10)
         if comboCounter * 2 <= 128 {
             comboCounter = comboCounter*2
         }
-        //logic for increasing score or monster defeated count?
     }
     
     func playerDidTouchMonster(monster: SKSpriteNode) {
@@ -308,13 +301,10 @@ class GameScene: SKScene {
         playerHealth = playerHealth - 1
         comboCounter = 1
         if playerHealth <= 0 {
-            //death animation?
-            //segue to game over screen
             let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
             let gameOverScene = GameOverScene(size: self.size, score: playerScore)
             view?.presentScene(gameOverScene, transition: reveal)
         }
-        //player flinch animation
     }
 }
 
