@@ -22,9 +22,9 @@ class MenuScene: SKScene {
         addChild(background)
         
         let titleLabel = SKLabelNode(fontNamed: "Chalkduster")
-        titleLabel.text = "Jump 'N Shoot Man"
+        titleLabel.text = "Super Guy in the Galaxy"
         titleLabel.fontSize = 40
-        titleLabel.fontColor = SKColor.black
+        titleLabel.fontColor = SKColor.white
         titleLabel.position = CGPoint(x: size.width/2, y: (size.height*2/3))
         
         addChild(titleLabel)
@@ -41,20 +41,45 @@ class MenuScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            let location = t.location(in: self)
-            if startButton.contains(location) {
-                run(SKAction.sequence([
-                    SKAction.wait(forDuration: 1.0),
-                    SKAction.run() {
-                        [weak self] in
-                        guard let `self` = self else {return}
-                        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                        let scene = GameScene(size: self.size)
-                        self.view?.presentScene(scene, transition: reveal)
-                    }
-                    ]))
-            }
+        guard let t = touches.first else {
+            return
+        }
+        let location = t.location(in: self)
+        if startButton.contains(location) {
+            let scale = SKAction.scale(to: 0.7, duration: 0.1)
+            startButton.run(scale)
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let t = touches.first else {
+            return
+        }
+        let location = t.location(in: self)
+        if !startButton.contains(location) {
+            let scale = SKAction.scale(to: 1, duration: 0.1)
+            startButton.run(scale)
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let t = touches.first else {
+            return
+        }
+        let location = t.location(in: self)
+        if startButton.contains(location) {
+            let scale = SKAction.scale(to: 1, duration: 0.1)
+            startButton.run(scale)
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: 1.0),
+                SKAction.run() {
+                    [weak self] in
+                    guard let `self` = self else {return}
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    let scene = GameScene(size: self.size)
+                    self.view?.presentScene(scene, transition: reveal)
+                }
+            ]))
         }
     }
 }

@@ -160,7 +160,7 @@ class GameScene: SKScene {
     
     func setUpBackground() {
         //set up moving ground texture
-        backgroundColor = UIColor(red: 0/255, green: 200/255, blue: 255/255, alpha: 1.0)
+        backgroundColor = UIColor(red: 0/255, green: 60/255, blue: 255/255, alpha: 1.0)
         
         for i in 0..<2 {
             let groundTexture = SKTexture(imageNamed: "ground-\(i)")
@@ -238,7 +238,7 @@ class GameScene: SKScene {
         projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
         projectile.physicsBody?.usesPreciseCollisionDetection = true
         
-        //run(SKAction.playSoundFileNamed("Pew_Pew-DKnight556-1379997159.mp3", waitForCompletion: false))
+        run(SKAction.playSoundFileNamed("Pew_Pew-DKnight556-1379997159.mp3", waitForCompletion: false))
         addChild(projectile)
         
         let destination = projectile.position + CGPoint(x: 1000, y: 0)
@@ -297,6 +297,7 @@ class GameScene: SKScene {
     }
     
     func playerDidTouchMonster(monster: SKSpriteNode) {
+        run(SKAction.playSoundFileNamed("roblox-death-sound-effect-opNTQCf4R.mp3", waitForCompletion: false))
         monster.removeFromParent()
         playerHealth = playerHealth - 1
         comboCounter = 1

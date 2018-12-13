@@ -12,7 +12,7 @@ class GameOverScene: SKScene {
     init(size: CGSize, score: Int) {
         super.init(size: size)
         
-        let background = SKSpriteNode(imageNamed: "bg-1")
+        let background = SKSpriteNode(imageNamed: "bg-0")
         background.zPosition = -1
         background.size = CGSize(width: size.width, height: size.height)
         background.anchorPoint = CGPoint.zero
@@ -21,14 +21,14 @@ class GameOverScene: SKScene {
         let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = "GAME OVER"
         label.fontSize = 40
-        label.fontColor = SKColor.black
+        label.fontColor = SKColor.white
         label.position = CGPoint(x: size.width/2, y: size.height*2/3)
         addChild(label)
         
         let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabel.text = "Final score: \(score)"
         scoreLabel.fontSize = 30
-        scoreLabel.fontColor = SKColor.black
+        scoreLabel.fontColor = SKColor.white
         scoreLabel.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(scoreLabel)
         
