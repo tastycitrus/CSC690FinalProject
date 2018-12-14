@@ -267,7 +267,7 @@ class GameScene: SKScene {
         monster.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
         monster.physicsBody?.collisionBitMask = PhysicsCategory.none
         
-        let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: (size.height*0.9) - monster.size.height/2)
+        let yPos = random(min: (size.height*0.2) + (monster.size.width/2), max: (size.height*0.2 + 300) - monster.size.height/2)
         
         monster.position = CGPoint(x: size.width + monster.size.width/2, y: yPos)
         
