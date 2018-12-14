@@ -2,7 +2,7 @@
 
 ## Contributor(s) to project: Diana Luu
 
-###### Working Title: Jump N' Shoot Man
+###### Working Title: Super Guy in the Galaxy
 
 Progress Report (11/14/18):
 * Completed tasks:
@@ -52,3 +52,9 @@ Progress Report (12/12/18):
 * Known issues:
 	* FPS stays at 40 FPS for unknown reasons
 	* Game still occasionally freezes upon startup
+	
+Progress Report (12/13/18):
+* Completed tasks:
+	* Changed menu screen and game over backgrounds
+	* Changed ground color
+	* Edited monster spawn so gameplay functions as normal on larger screens
