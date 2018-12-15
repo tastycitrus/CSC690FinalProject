@@ -60,7 +60,6 @@ class GameScene: SKScene {
     private var jumpButton: SKNode! = nil
     private var shootButton: SKNode! = nil
     let player = SKSpriteNode(imageNamed: "playerrun3")
-    //currently using placeholder for player sprite; should make texture for running animation
     
     var backgroundSpeed: CGFloat = 80.0
     var deltaTime: TimeInterval = 0
@@ -83,7 +82,8 @@ class GameScene: SKScene {
     
     var backgroundMusic: SKAudioNode!
     
-    override func sceneDidLoad() {
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
         physicsWorld.contactDelegate = self
         
         //set up background
@@ -112,8 +112,7 @@ class GameScene: SKScene {
         }
         
         setUpPlayer()
-        
-        //set up different difficulty modes that alter spawn rate of monsters?
+
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addMonster), SKAction.wait(forDuration: TimeInterval(arc4random_uniform(4)))])))
     }
     
